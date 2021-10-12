@@ -1,0 +1,31 @@
+h1 {
+    color: darkgray;
+    text-align: center;
+    font-size: 50px;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 8px 8px;
+    margin: 10px 0px;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: limegreen;
+    color: White;
+    border: none;
+    padding: 12px 12px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+body {
+    background-color: GhostWhite;
+    padding: 20px;
+}
+
+h4 {
+    color: darkred;
+}
+
