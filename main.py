@@ -1,74 +1,37 @@
-from flask.views import MethodView
-from wtforms import Form, StringField, SubmitField
-from flask import Flask, render_template, request
-from flatmates_bill import flat
+from words import words
+import random
 
-app = Flask(__name__)
+word = random.choice(words).upper()
+word_letters = set(word)
+used_letters = []
+lives = 10
+BLANK = '_'
+word_board = [BLANK for letter in word]
+letters_not_guess_yet = len(word_letters)
 
-class HomePage(MethodView):
-    def get(self):
-        return render_template('index.html')
+while letters_not_guess_yet > 0 and lives > 0:
+    print(word_board)
+    print(f'You have {lives} lives. \n letters you used: {used_letters}')
 
+    user_letter = input('Guess a letter: ').upper()
+    if user_letter in used_letters:
+        print('You already guess this letter. Please try again')
+        continue
 
-class BillFormPage(MethodView):
-    def get(self):
-        bill_form = BillForm()
-        return render_template('bill_form_page.html', billform=bill_form)
+    word_board = [user_letter if user_letter == letter
+                  else letter if letter in used_letters
+                  else BLANK for letter in word]
 
-    def post(self):
-        billform = BillForm(request.form)
-        amount = float(billform.amount.data)
-        period = billform.period.data
+    used_letters.append(user_letter)
 
-        name1 = billform.name1.data
-        days_in_house1 = float(billform.days_in_house1.data)
+    if user_letter in word:
+        letters_not_guess_yet -= 1
+    else:
+        lives -= 1
 
-        name2 = billform.name2.data
-        days_in_house2 = float(billform.days_in_house2.data)
+if letters_not_guess_yet == 0:
+    print('You win! Good job!')
 
-        the_bill = flat.Bill(amount, period)
-        flatmat1 = flat.Flatmate(name1, days_in_house1)
-        flatmat2 = flat.Flatmate(name2, days_in_house2)
-
-        return render_template('bill_form_page.html',result=True, billform=billform, name1=flatmat1.name, amount1=flatmat1.pays(the_bill, flatmat2)
-                               , name2=flatmat2.name, amount2=flatmat2.pays(the_bill, flatmat1))
-
-
-class ResultsPage(MethodView):
-    def post(self):
-        billform = BillForm(request.form)
-        amount = float(billform.amount.data)
-        period = billform.period.data
-
-        name1 = billform.name1.data
-        days_in_house1 = float(billform.days_in_house1.data)
-
-        name2 = billform.name2.data
-        days_in_house2 = float(billform.days_in_house2.data)
-
-        the_bill = flat.Bill(amount, period)
-        flatmat1 = flat.Flatmate(name1, days_in_house1)
-        flatmat2 = flat.Flatmate(name2, days_in_house2)
-
-        return render_template('results.html', name1=flatmat1.name, amount1=flatmat1.pays(the_bill, flatmat2)
-                               , name2=flatmat2.name, amount2=flatmat2.pays(the_bill, flatmat1))
-
-
-class BillForm(Form):
-    amount = StringField('Bill Amount: ', default= 100)
-    period = StringField('Bill Period: ', default= 'December 2021')
-
-    name1 = StringField('Name: ', default='Or')
-    days_in_house1 = StringField('Days in the house: ', default=20)
-
-    name2 = StringField('Name: ', default= 'Michael')
-    days_in_house2 = StringField('Days in the house: ', default=12)
-
-    button = SubmitField('Calculate')
-
-app.add_url_rule('/' , view_func=HomePage.as_view('home_page'))
-app.add_url_rule('/bill_form_page' , view_func=BillFormPage.as_view('bill_form_page'))
-#app.add_url_rule('/results', view_func=ResultsPage.as_view('result_page'))
-
-app.run(debug=True)
+else:
+    print('Game over.. You lost :( ')
 
