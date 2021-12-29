@@ -5,7 +5,7 @@ https://www.kaggle.com/sudalairajkumar/daily-temperature-of-major-cities
 https://openweathermap.org/bulk (14, 16)
 
 In order to run this app, run the following commands:
-1.	pip install –r requierments.txt
+1.	pip install –r requirements.txt
 2.	python manage.py runserver
 
 Usage examples:
