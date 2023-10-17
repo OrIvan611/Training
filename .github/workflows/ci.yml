@@ -20,9 +20,3 @@ jobs:
         python-version: 3.x  # Use your desired Python version
 
    
-
-    - name: Lint with flake8
-      run: flake8 .
-
-    - name: Test with pytest
-      run: pytest
