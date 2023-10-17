@@ -19,8 +19,7 @@ jobs:
       with:
         python-version: 3.x  # Use your desired Python version
 
-    - name: Install Dependencies
-      run: pip install -r requirements.txt
+   
 
     - name: Lint with flake8
       run: flake8 .
