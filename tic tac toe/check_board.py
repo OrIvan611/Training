@@ -1,7 +1,8 @@
-class CheckEqualList:
-    def __init__(self, board: list):
-        self._board = board
+from const import constants
+Squares = constants["Squares"]
 
+
+class CheckEqualList:
     @staticmethod
     def _check_if_all_equal(signs: list):
         if signs[0] != "_":
@@ -11,8 +12,8 @@ class CheckEqualList:
 
 
 class CheckLine(CheckEqualList):
-    def check(self) -> bool:
-        for line in self._board:
+    def check(self, board: Squares) -> bool:
+        for line in board:
             signs = []
             signs.extend(line)
             if self._check_if_all_equal(signs):
@@ -21,10 +22,10 @@ class CheckLine(CheckEqualList):
 
 
 class CheckColumn(CheckEqualList):
-    def check(self) -> bool:
+    def check(self, board: Squares) -> bool:
         for line in range(3):
             signs = []
-            column = [self._board[0][line], self._board[1][line], self._board[2][line]]
+            column = [board[0][line], board[1][line], board[2][line]]
             signs.extend(column)
             if self._check_if_all_equal(signs):
                 return True
@@ -32,9 +33,9 @@ class CheckColumn(CheckEqualList):
 
 
 class CheckDiagonal(CheckEqualList):
-    def check(self) -> bool:
-        diagonal_1 = [self._board[0][0], self._board[1][1], self._board[2][2]]
-        diagonal_2 = [self._board[0][2], self._board[1][1], self._board[2][0]]
+    def check(self, board: Squares) -> bool:
+        diagonal_1 = [board[0][0], board[1][1], board[2][2]]
+        diagonal_2 = [board[0][2], board[1][1], board[2][0]]
 
         if self._check_if_all_equal(diagonal_1) or self._check_if_all_equal(diagonal_2):
             return True
@@ -42,8 +43,9 @@ class CheckDiagonal(CheckEqualList):
 
 
 class CheckTie(CheckEqualList):
-    def check(self):
-        for line in self._board:
+    @staticmethod
+    def check(board: Squares):
+        for line in board:
             for cell in line:
                 if cell == "_":
                     return False

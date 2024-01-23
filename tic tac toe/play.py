@@ -1,21 +1,22 @@
-from Board import Board
+from const import constants
+Squares = constants["Squares"]
 
 
 class Play:
-    def __init__(self, board: Board, name: str, sign: str):
+    def __init__(self, board: Squares, name: str, sign: str):
         self.board = board
         self._name = name
         self._sign = sign
 
     def _valid_movement(self, line: int, column: int) -> bool:
-        return self.board.board[line][column] == "_"
+        return self.board[line][column] == "_"
 
     @staticmethod
     def _valid_input(user_input: int):
         return 1 <= user_input <= 9
 
     def _movement(self, line: int, column: int):
-        self.board.board[line][column] = self._sign
+        self.board[line][column] = self._sign
 
     def play(self) -> bool:
         location = int(input(f"{self._name}, Pick a place between 1-9: "))
